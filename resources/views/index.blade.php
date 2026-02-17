@@ -4,7 +4,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>AdminLTE v4 | Dashboard</title>
+    <title>Nest | Dashboard</title>
     <!--begin::Primary Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="title" content="AdminLTE v4 | Dashboard" />
@@ -152,26 +152,26 @@
                             <i class="bi bi-bell-fill"></i>
                             <span class="navbar-badge badge text-bg-warning">15</span>
                         </a> -->
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
-                            <span class="dropdown-item dropdown-header">15 Notifications</span>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="bi bi-envelope me-2"></i> 4 new messages
-                                <span class="float-end text-secondary fs-7">3 mins</span>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="bi bi-people-fill me-2"></i> 8 friend requests
-                                <span class="float-end text-secondary fs-7">12 hours</span>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="bi bi-file-earmark-fill me-2"></i> 3 new reports
-                                <span class="float-end text-secondary fs-7">2 days</span>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item dropdown-footer"> See All Notifications </a>
-                        </div>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+                        <span class="dropdown-item dropdown-header">15 Notifications</span>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="bi bi-envelope me-2"></i> 4 new messages
+                            <span class="float-end text-secondary fs-7">3 mins</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="bi bi-people-fill me-2"></i> 8 friend requests
+                            <span class="float-end text-secondary fs-7">12 hours</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="bi bi-file-earmark-fill me-2"></i> 3 new reports
+                            <span class="float-end text-secondary fs-7">2 days</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item dropdown-footer"> See All Notifications </a>
+                    </div>
                     </li>
                     <!--end::Notifications Dropdown Menu-->
                     <!--begin::Fullscreen Toggle-->
@@ -377,15 +377,17 @@
 
 
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="#" class="nav-link"
+                            onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
                             <i class="nav-icon bi bi-power"></i>
-                            <p>
-                                Logout
-
-                            </p>
+                            <span>Logout</span>
                         </a>
-
                     </li>
+
+                    <form id="logoutForm" action="{{ route('logout') }}" method="POST" hidden>
+                        @csrf
+                    </form>
+
 
                     <!--end::Sidebar Menu-->
                 </nav>
@@ -600,7 +602,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
 
-            
+
             const weeklyOptions = {
                 series: [{
                     name: 'Sales',
@@ -626,7 +628,7 @@
             weeklyChart.render();
 
 
-         
+
             const monthlyOptions = {
                 series: [{
                     name: 'Monthly Sales',

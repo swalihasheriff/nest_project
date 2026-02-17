@@ -1,0 +1,102 @@
+/* Background */
+.login-body {
+    background-color: #f4f6f9;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Container */
+.login-container {
+    width: 100%;
+    max-width: 900px;
+    padding: 20px;
+}
+
+/* Card */
+.login-box {
+    background: #fff;
+    border-radius: 8px;
+    display: flex;
+    box-shadow: 0 0 20px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+
+/* Left panel (matches sidebar vibe) */
+.login-brand {
+    background: #1f2937;
+    color: #fff;
+    width: 40%;
+    padding: 50px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-brand h2 {
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.login-brand p {
+    font-size: 14px;
+    color: #cbd5e1;
+}
+
+/* Right form */
+.login-form {
+    width: 60%;
+    padding: 50px 40px;
+}
+
+.login-form h4 {
+    font-weight: 600;
+    color: #111827;
+}
+
+/* Inputs */
+.form-control {
+    border-radius: 6px;
+    padding: 10px;
+}
+
+/* Button */
+.btn-primary {
+    background-color: #2563eb;
+    border: none;
+    padding: 10px;
+    font-weight: 500;
+}
+
+.btn-primary:hover {
+    background-color: #1d4ed8;
+}
+
+/* Forgot link */
+.forgot-link {
+    font-size: 13px;
+    text-decoration: none;
+    color: #2563eb;
+}
+
+.forgot-link:hover {
+    text-decoration: underline;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .login-box {
+        flex-direction: column;
+    }
+
+    .login-brand,
+    .login-form {
+        width: 100%;
+    }
+
+    .login-brand {
+        text-align: center;
+    }
+}
