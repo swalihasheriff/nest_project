@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>@yield('title', 'Nest | Dashboard')</title>
+    <title>@yield('title')</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 
     {{-- Fonts --}}
     <link rel="stylesheet"
@@ -41,10 +43,11 @@
 
 </div>
 
-{{-- ================= SCRIPTS ================= --}}
+{{-- SCRIPTS  --}}
 
 {{-- Bootstrap --}}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 
 {{-- AdminLTE --}}
 <script src="{{ asset('js/adminlte.js') }}"></script>

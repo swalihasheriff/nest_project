@@ -23,7 +23,7 @@ class LoginController extends Controller
 
             return response()->json([
                 'success' => true,
-                'redirect' => route('dashboard'),
+                'redirect' => route('dashboard.index'),
             ]);
         }
         return response()->json([
@@ -34,7 +34,7 @@ class LoginController extends Controller
 
     public function index()
     {
-        return view('index');
+        return view('dashboard.index');
     }
 
 
