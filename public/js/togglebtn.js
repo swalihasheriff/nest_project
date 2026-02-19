@@ -36,6 +36,7 @@ function updateSupplierStatus(supplierId, status, $badge) {
             _token: $('meta[name="csrf-token"]').attr('content'),
             status: status
         },
+        
         success: function (response) {
             if (response.success) {
                 if (status === 1) {
