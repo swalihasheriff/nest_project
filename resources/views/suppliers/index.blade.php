@@ -172,4 +172,6 @@
     <script src="{{ asset('js/datatable.js') }}"></script>
     <script src="{{ asset('js/add.js') }}"></script>
     <script src="{{ asset('js/edit.js') }}"></script>
+    <script src="{{ asset('js/togglebtn.js') }}"></script>
+    
 @endpush
