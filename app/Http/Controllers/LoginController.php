@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -34,7 +35,9 @@ class LoginController extends Controller
 
     public function index()
     {
-        return view('dashboard.index');
+        $supplierCount = Supplier::count();
+
+        return view('dashboard.index', compact('supplierCount'));
     }
 
 

@@ -14,12 +14,14 @@
             <div class="row g-3 mb-4">
 
                 <div class="col-lg-2 col-md-4 col-6">
-                    <div class="small-box bg-danger text-white">
-                        <div class="inner">
-                            <h4>1</h4>
-                            <p>Suppliers</p>
+                    <a href="{{ route('suppliers.index') }}" class="text-decoration-none">
+                        <div class="small-box bg-danger text-white">
+                            <div class="inner">
+                                <h4>{{ $supplierCount }}</h4>
+                                <p>Suppliers</p>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
 
                 <div class="col-lg-2 col-md-4 col-6">
@@ -78,7 +80,7 @@
             </div>
             <div class="row align-items-stretch mb-4">
 
-                <!-- Sales Chart -->
+
                 <div class="col-lg-8">
                     <div class="card h-100 shadow-sm">
                         <div class="card-header bg-white">
@@ -90,7 +92,7 @@
                     </div>
                 </div>
 
-                <!-- Orders vs Deliveries -->
+
                 <div class="col-lg-4">
                     <div class="card h-100 shadow-sm">
                         <div class="card-header bg-white">
@@ -103,9 +105,6 @@
                 </div>
 
             </div>
-
-
-
         </div>
     </div>
 @endsection
