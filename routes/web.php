@@ -20,11 +20,9 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::middleware(([CheckLogin::class]))->group(function () {
 
 
-    Route::get('/dashboard', function () {
-        return view('dashboard.index');
-    })
-        ->middleware(['check.login'])
-        ->name('dashboard.index');
+    Route::get('/dashboard', [LoginController::class, 'index'])
+    ->middleware(['check.login'])
+    ->name('dashboard.index');
 
     Route::post('/logout', [LoginController::class, 'logout'])
         ->middleware(['check.login'])
