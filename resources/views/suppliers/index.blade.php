@@ -14,9 +14,9 @@
         </div>
         <!-- Supplier Table -->
         <div class="card shadow-sm">
-            <div class="card-body p-0">
+            <div class="card-body p-3">
 
-                <div class="table-responsive">
+                <div class="table-responsive-m2">
                     <table id="suppliersTable" class="table table-hover align-middle mb-0">
                         <thead class="table-light">
                             <tr>
@@ -175,3 +175,4 @@
     <script src="{{ asset('js/togglebtn.js') }}"></script>
     
 @endpush
+ 
