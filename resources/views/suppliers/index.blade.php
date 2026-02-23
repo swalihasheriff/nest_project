@@ -169,10 +169,10 @@
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
 
 
-    <script src="{{ asset('js/datatable.js') }}"></script>
-    <script src="{{ asset('js/add.js') }}"></script>
-    <script src="{{ asset('js/edit.js') }}"></script>
-    <script src="{{ asset('js/togglebtn.js') }}"></script>
+    <script src="{{ asset('js/suppliers/datatable.js') }}"></script>
+    <script src="{{ asset('js/suppliers/add.js') }}"></script>
+    <script src="{{ asset('js/suppliers/edit.js') }}"></script>
+    <script src="{{ asset('js/suppliers/togglebtn.js') }}"></script>
     
 @endpush
  

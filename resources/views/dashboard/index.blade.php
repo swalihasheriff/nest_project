@@ -25,9 +25,10 @@
                 </div>
 
                 <div class="col-lg-2 col-md-4 col-6">
+                    <a href="{{ route('products.index') }}"></a>
                     <div class="small-box bg-secondary text-white">
                         <div class="inner">
-                            <h4>2</h4>
+                            <h4>{{ $productCount }}</h4>
                             <p>Products</p>
                         </div>
                     </div>
