@@ -7,8 +7,8 @@
     <div class="sidebar-wrapper">
         <nav class="mt-2">
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
-                <li class="nav-item menu-open">
-                    <a href="{{ route('dashboard.index') }}" class="nav-link active">
+                <li class="nav-item ">
+                    <a href="{{ route('dashboard.index') }}" class="nav-link">
                         <i class="nav-icon bi bi-speedometer"></i>
                         <p>Dashboard</p>
                     </a>
@@ -20,7 +20,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('products.index') }}" class="nav-link">
                         <i class="nav-icon bi bi-box-seam-fill"></i>
                         <p>Products</p>
                     </a>

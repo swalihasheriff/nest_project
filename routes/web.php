@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProductController;
 use App\Http\Middleware\CheckLogin;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ForgotPasswordController;
@@ -50,6 +51,16 @@ Route::middleware(([CheckLogin::class]))->group(function () {
         ->name('toggle-status');
     Route::get('/{id}/edit', [SupplierController::class, 'edit'])->name('edit');
     Route::post('/{id}/update', [SupplierController::class, 'update'])->name('update');
+});
+
+Route::prefix('products')->name('products.')->group(function () {
+    Route::get('/', [ProductController::class,'index'])->name('index');
+    Route::get('/create', [ProductController::class, 'create'])->name('create');
+    Route::post('/store', [ProductController::class,'store'])->name('store');
+    Route::get('/{id}/edit', [ProductController::class,'edit'])->name('edit');
+    Route::post('/{id}/update', [ProductController::class,'update'])->name('update');
+    Route::get('/{id}/view', [ProductController::class, 'view'])->name('view');
+    Route::post('/{product}/toggle-status', [ProductController::class,'toggleStatus']);
 });
 
 });
