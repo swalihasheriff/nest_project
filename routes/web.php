@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\WarehouseOrderController;
+use App\Http\Controllers\WarehouseOrderItemController;
 use App\Http\Middleware\CheckLogin;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ForgotPasswordController;
@@ -22,8 +24,8 @@ Route::middleware(([CheckLogin::class]))->group(function () {
 
 
     Route::get('/dashboard', [LoginController::class, 'index'])
-    ->middleware(['check.login'])
-    ->name('dashboard.index');
+        ->middleware(['check.login'])
+        ->name('dashboard.index');
 
     Route::post('/logout', [LoginController::class, 'logout'])
         ->middleware(['check.login'])
@@ -41,27 +43,48 @@ Route::middleware(([CheckLogin::class]))->group(function () {
 
     Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])
         ->name('password.update');
-        
-    Route::prefix('suppliers')->name('suppliers.')->group(function () {
-    Route::get('/', [SupplierController::class, 'index'])
-        ->name('index');
-    Route::post('/store', [SupplierController::class, 'store'])
-        ->name('store');
-    Route::post('/{supplier}/toggle-status', [SupplierController::class, 'toggleStatus'])
-        ->name('toggle-status');
-    Route::get('/{id}/edit', [SupplierController::class, 'edit'])->name('edit');
-    Route::post('/{id}/update', [SupplierController::class, 'update'])->name('update');
-});
 
-Route::prefix('products')->name('products.')->group(function () {
-    Route::get('/', [ProductController::class,'index'])->name('index');
-    Route::get('/create', [ProductController::class, 'create'])->name('create');
-    Route::post('/store', [ProductController::class,'store'])->name('store');
-    Route::get('/{id}/edit', [ProductController::class,'edit'])->name('edit');
-    Route::post('/{id}/update', [ProductController::class,'update'])->name('update');
-    Route::get('/{id}/view', [ProductController::class, 'view'])->name('view');
-    Route::post('/{product}/toggle-status', [ProductController::class,'toggleStatus']);
-});
+    Route::prefix('suppliers')->name('suppliers.')->group(function () {
+        Route::get('/', [SupplierController::class, 'index'])
+            ->name('index');
+        Route::post('/store', [SupplierController::class, 'store'])
+            ->name('store');
+        Route::post('/{supplier}/toggle-status', [SupplierController::class, 'toggleStatus'])
+            ->name('toggle-status');
+        Route::get('/{id}/edit', [SupplierController::class, 'edit'])->name('edit');
+        Route::post('/{id}/update', [SupplierController::class, 'update'])->name('update');
+    });
+
+    Route::prefix('products')->name('products.')->group(function () {
+        Route::get('/', [ProductController::class, 'index'])->name('index');
+        Route::get('/create', [ProductController::class, 'create'])->name('create');
+        Route::post('/store', [ProductController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [ProductController::class, 'edit'])->name('edit');
+        Route::post('/{id}/update', [ProductController::class, 'update'])->name('update');
+        Route::get('/{id}/view', [ProductController::class, 'view'])->name('view');
+        Route::post('/{product}/toggle-status', [ProductController::class, 'toggleStatus']);
+    });
+
+    Route::prefix('warehouse-orders')->name('warehouse.orders.')->group(function () {
+        Route::get('/', [WarehouseOrderController::class, 'index'])->name('index');
+        Route::get('/create', [WarehouseOrderController::class, 'create'])->name('create');
+        Route::post('/store', [WarehouseOrderController::class, 'store'])->name('store');
+        Route::get('/{id}/view', [WarehouseOrderController::class, 'view'])->name('view');
+        Route::get('/{order}/total', [WarehouseOrderController::class, 'getTotal'])->name('total');
+        Route::post('{order}/finalize', [WarehouseOrderController::class, 'finalize'])->name('finalize');
+        Route::post('{order}/undo-finalize', [WarehouseOrderController::class, 'undoFinalize'])->name('undoFinalize');
+        Route::post('{order}/cancel', [WarehouseOrderController::class, 'cancel'])->name('cancel');
+        Route::post('{order}/deliver', [WarehouseOrderController::class, 'deliver'])->name('deliver');
+        Route::post( '{order}/deliver', [WarehouseOrderController::class, 'updateStock'])->name('deliver');
+
+        Route::prefix('{order}/items')->name('items.')->group(function () {
+            Route::post('/auto-fill', [WarehouseOrderItemController::class, 'autoFill'])->name('autoFill');
+            Route::get('/', [WarehouseOrderItemController::class, 'index'])->name('index');
+            Route::post('/store', [WarehouseOrderItemController::class, 'store'])->name('store');
+            Route::post('/{item}', [WarehouseOrderItemController::class, 'destroy'])->whereNumber('item')->name('destroy');
+            Route::post('/{item}/update', [WarehouseOrderItemController::class, 'update'])->whereNumber('item')->name('update');
+        });
+    });
 
 });
 

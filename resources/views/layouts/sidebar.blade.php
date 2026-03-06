@@ -26,7 +26,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('warehouse.orders.index') }}" class="nav-link">
                         <i class="nav-icon bi bi-clipboard-fill"></i>
                         <p>Warehouse Order</p>
                     </a>

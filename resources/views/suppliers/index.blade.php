@@ -7,7 +7,7 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h4 class="fw-semibold mb-0">Supplier List</h4>
 
-            <button  id="addSupplierBtn"class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSupplierModal">
+            <button  id="addSupplierBtn"class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addSupplierModal">
                 <i class="bi bi-plus-circle me-1"></i> Add New Supplier
             </button>
 
@@ -17,7 +17,7 @@
             <div class="card-body p-3">
 
                 <div class="table-responsive-m2">
-                    <table id="suppliersTable" class="table table-hover align-middle mb-0">
+                    <table id="suppliersTable" class="table table-bordered table-striped align-middle mb-0">
                         <thead class="table-light">
                             <tr>
                                 <th style="width:80px; white-space:nowrap;">Sl No</th>
@@ -86,7 +86,7 @@
                             Cancel
                         </button>
                         <button type="submit" class="btn btn-primary">
-                            Save Supplier
+                            <i class="bi bi-save me-1"></i> Save Supplier
                         </button>
                     </div>
                 </form>
@@ -143,7 +143,7 @@
                             Cancel
                         </button>
                         <button type="submit" class="btn btn-primary">
-                            Update Supplier
+                            <i class="bi bi-save me-1"></i> Update Supplier
                         </button>
                     </div>
                 </form>

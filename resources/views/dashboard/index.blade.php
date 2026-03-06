@@ -25,22 +25,27 @@
                 </div>
 
                 <div class="col-lg-2 col-md-4 col-6">
-                    <a href="{{ route('products.index') }}"></a>
-                    <div class="small-box bg-secondary text-white">
-                        <div class="inner">
-                            <h4>{{ $productCount }}</h4>
-                            <p>Products</p>
+                    <a href="{{ route('products.index') }}" class="text-decoration-none">
+                        <div class="small-box bg-secondary text-white">
+                            <div class="inner">
+                                <h4>{{ $productCount }}</h4>
+                                <p>Products</p>
+                            </div>
                         </div>
-                    </div>
+                    </a>
+
                 </div>
 
                 <div class="col-lg-2 col-md-4 col-6">
-                    <div class="small-box bg-dark text-white">
+                    <a href="{{ route('warehouse.orders.index') }}" class="text-decoration-none">
+                        <div class="small-box bg-dark text-white">
                         <div class="inner">
-                            <h4>0</h4>
+                            <h4>{{ $orderCount }}</h4>
                             <p>Orders</p>
                         </div>
                     </div>
+                    </a>
+                    
                 </div>
 
                 <div class="col-lg-2 col-md-4 col-6">
