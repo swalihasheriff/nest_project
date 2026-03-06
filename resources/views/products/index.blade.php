@@ -13,7 +13,7 @@
                     <i class="bi bi-download me-1"></i> Import Products
                 </button>
 
-                <a href="{{ route('products.create') }}" class="btn btn-primary">
+                <a href="{{ route('products.create') }}" class="btn btn-outline-primary">
                     <i class="bi bi-plus-circle me-1"></i> Add New Product
                 </a>
             </div>
@@ -61,6 +61,5 @@
 
     <script src="{{ asset('js/products/datatable.js') }}"></script>
     <script src="{{ asset('js/products/togglebtn.js') }}"></script>
-
 
 @endpush

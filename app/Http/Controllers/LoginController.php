@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Models\Product;
 use App\Models\Supplier;
+use App\Models\WarehouseOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -38,8 +39,9 @@ class LoginController extends Controller
     {
         $supplierCount = Supplier::count();
         $productCount = Product::count();
+        $orderCount =    WarehouseOrder::count();
 
-        return view('dashboard.index', compact('supplierCount', 'productCount'));
+        return view('dashboard.index', compact('supplierCount', 'productCount','orderCount'));
     }
 
 
