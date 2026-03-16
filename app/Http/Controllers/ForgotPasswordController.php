@@ -34,19 +34,14 @@ class ForgotPasswordController extends Controller
             ]);
         }
 
-        // Generate token
         $token = Str::random(64);
 
-        // Save token in users table
         $user->forgot_token = $token;
         $user->forgot_token_created_at = now();
         $user->save();
 
-
-        // Reset link
         $resetLink = url('/reset-password/' . $token . '/' . $user->email);
 
-        // Send mail
         Mail::to($user->email)->send(
             new ForgotPasswordMail($resetLink)
         );
@@ -97,8 +92,6 @@ class ForgotPasswordController extends Controller
             ]);
         }
 
-
-        // Update password & clear token
         $user->password = Hash::make($request->password);
         $user->forgot_token = null;
         $user->forgot_token_created_at = null;

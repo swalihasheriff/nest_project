@@ -23,4 +23,9 @@ class WarehouseOrderItem extends Model
     {
         return $this->belongsTo(WarehouseOrder::class, 'warehouse_order_id');
     }
+
+    public function goodsReceiving()
+    {
+        return $this->hasOne(GoodsReceiving::class);
+    }
 }
