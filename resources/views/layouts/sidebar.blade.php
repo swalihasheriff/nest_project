@@ -32,7 +32,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('goods.receiving.index') }}" class="nav-link">
                         <i class="nav-icon bi bi-truck"></i>
                         <p>Goods Receiving</p>
                     </a>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GoodsReceivingController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\WarehouseOrderController;
@@ -17,8 +18,18 @@ Route::get('/', function () {
     return view('login');
 })->name('login.form');
 
-
 Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])
+        ->name('password.request');
+
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink'])
+        ->name('password.email');
+
+    Route::get('/reset-password/{token}/{email}', [ForgotPasswordController::class, 'showResetPasswordForm'])
+        ->name('password.reset');
+
+    Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])
+        ->name('password.update');
 
 Route::middleware(([CheckLogin::class]))->group(function () {
 
@@ -30,19 +41,6 @@ Route::middleware(([CheckLogin::class]))->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])
         ->middleware(['check.login'])
         ->name('logout');
-
-
-    Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])
-        ->name('password.request');
-
-    Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink'])
-        ->name('password.email');
-
-    Route::get('/reset-password/{token}/{email}', [ForgotPasswordController::class, 'showResetPasswordForm'])
-        ->name('password.reset');
-
-    Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])
-        ->name('password.update');
 
     Route::prefix('suppliers')->name('suppliers.')->group(function () {
         Route::get('/', [SupplierController::class, 'index'])
@@ -75,7 +73,6 @@ Route::middleware(([CheckLogin::class]))->group(function () {
         Route::post('{order}/undo-finalize', [WarehouseOrderController::class, 'undoFinalize'])->name('undoFinalize');
         Route::post('{order}/cancel', [WarehouseOrderController::class, 'cancel'])->name('cancel');
         Route::post('{order}/deliver', [WarehouseOrderController::class, 'deliver'])->name('deliver');
-        Route::post( '{order}/deliver', [WarehouseOrderController::class, 'updateStock'])->name('deliver');
 
         Route::prefix('{order}/items')->name('items.')->group(function () {
             Route::post('/auto-fill', [WarehouseOrderItemController::class, 'autoFill'])->name('autoFill');
@@ -84,6 +81,17 @@ Route::middleware(([CheckLogin::class]))->group(function () {
             Route::post('/{item}', [WarehouseOrderItemController::class, 'destroy'])->whereNumber('item')->name('destroy');
             Route::post('/{item}/update', [WarehouseOrderItemController::class, 'update'])->whereNumber('item')->name('update');
         });
+    });
+
+    Route::prefix('goods-receiving')->name('goods.receiving.')->group(function () {
+    Route::get('/', [GoodsReceivingController::class, 'index'])->name('index');
+    Route::post('/list-item',[GoodsReceivingController::class,'listItem'])->name('list.item');
+    Route::post('/store',[GoodsReceivingController::class,'store'])->name('store');
+    Route::get('{id}', [GoodsReceivingController::class, 'show'])->name('show');
+    Route::post('{id}/update', [GoodsReceivingController::class, 'update'])->name('update');
+    Route::post('{id}/finalize', [GoodsReceivingController::class,'finalize'])->name('finalize');
+    Route::post('{id}/undo-finalize', [GoodsReceivingController::class, 'undoFinalize'])->name('undoFinalize');
+
     });
 
 });

@@ -23,5 +23,5 @@ window.orderItemsTable = $('#orderItemsTable').DataTable({
         { data: 'quantity', searchable: true },
         { data: 'total' },
         { data: 'action', orderable: false }
-    ],
+    ],               
 });

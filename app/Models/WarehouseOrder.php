@@ -19,4 +19,9 @@ class WarehouseOrder extends Model
     {
         return $this->hasMany(WarehouseOrderItem::class);
     }
+
+    public function goodsReceiving()
+    {
+        return $this->hasOne(GoodsReceiving::class);
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderRequest\StoreOrderRequest;
+use App\Models\GoodsReceiving;
 use App\Models\Product;
 use App\Models\Supplier;
 use App\Models\WarehouseOrder;
@@ -115,57 +116,63 @@ class WarehouseOrderController extends Controller
         return response()->json(['status' => true]);
     }
 
-    public function deliver(WarehouseOrder $order)
-    {
-        $order->status = 4;
-        $order->save();
-
-        return response()->json(['status' => true]);
-    }
-
-  
-
-public function updateStock(WarehouseOrder $order)
+public function deliver(WarehouseOrder $order)
 {
-    // Prevent double update
-    if ($order->status !== 2) { // 2 = finalized
-        return response()->json([
-            'status' => false,
-            'message' => 'Order must be finalized before delivery'
-        ], 422);
-    }
+    $order->status = 4;
+    $order->save();
 
-    DB::transaction(function () use ($order) {
-
-        $order->load('items');
-
-        if ($order->items->isEmpty()) {
-            throw new \Exception('No items found for this order');
-        }
-
-        foreach ($order->items as $item) {
-
-            $product = Product::find($item->product_id);
-
-            if (!$product) {
-                continue;
-            }
-
-            $product->stock_on_hand = $product->stock_on_hand ?? 0;
-           
-            $product->increment('stock_on_hand', $item->quantity);
-        }
- 
-        $order->update([
-            'status' => 4 
-        ]);
-    });
+    GoodsReceiving::create([
+        'warehouse_order_id' => $order->id,
+        'supplier_id' => $order->supplier_id,
+        'status' => 0
+    ]);
 
     return response()->json([
-        'status' => true,
-        'message' => 'Stock updated successfully'
+        'status' => true
     ]);
 }
+
+
+    public function updateStock(WarehouseOrder $order)
+    {
+        if ($order->status !== 2) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Order must be finalized before delivery'
+            ], 422);
+        }
+
+        DB::transaction(function () use ($order) {
+
+            $order->load('items');
+
+            if ($order->items->isEmpty()) {
+                throw new \Exception('No items found for this order');
+            }
+
+            foreach ($order->items as $item) {
+
+                $product = Product::find($item->product_id);
+
+                if (!$product) {
+                    continue;
+                }
+
+                $product->stock_on_hand = $product->stock_on_hand ?? 0;
+
+                $product->increment('stock_on_hand', $item->quantity);
+            }
+
+            $order->update([
+                'status' => 4
+            ]);
+        });
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Stock updated successfully'
+        ]);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -203,7 +210,7 @@ public function updateStock(WarehouseOrder $order)
             ->orderBy('description')
             ->get(['id', 'description', 'product_barcode1']);
 
-        return view('warehouse_orders.view', compact('order', 'products','ordereditems'));
+        return view('warehouse_orders.view', compact('order', 'products', 'ordereditems'));
     }
 
     /**
