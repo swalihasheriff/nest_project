@@ -255,6 +255,38 @@ class ProductController extends Controller
         ]);
     }
 
+    public function search(Request $request)
+    {
+        $term = $request->term;
+
+        $products = Product::where('ctn_barcode', 'like', "%$term%")
+            ->orWhere('upc', 'like', "%$term%")
+            ->orWhere('product_barcode1', 'like', "%$term%")
+            ->orWhere('product_barcode2', 'like', "%$term%")
+            ->orWhere('product_barcode3', 'like', "%$term%")
+            ->limit(10)
+            ->get();
+
+        $data = [];
+
+        foreach ($products as $product) {
+
+            // pick first available barcode
+            $barcode = $product->product_barcode1
+                ?? $product->product_barcode2
+                ?? $product->product_barcode3
+                ?? $product->upc
+                ?? $product->ctn_barcode;
+
+            $data[] = [
+                'label' => $barcode . ' - ' . $product->description,
+                'value' => $barcode
+            ];
+        }
+
+        return response()->json($data);
+    }
+
     /**
      * Remove the specified resource from storage.
      */
