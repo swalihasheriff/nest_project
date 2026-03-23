@@ -1,21 +1,24 @@
 $(document).ready(function () {
-    refreshOrderTotal()
 
     $('#addItemForm').validate({
 
         rules: {
-            product_id: { required: true },
-            quantity: { required: true, digits: true, min: 1 }
+            barcode: {
+                required: true
+            },
+            count: {
+                required: true,
+                number: true,
+                min: 0
+            }
         },
 
         messages: {
-            product_id: {
-                required: "Please select a product"
+            barcode: {
+                required: 'Please enter barcode'
             },
-            quantity: {
-                required: "Quantity is required",
-                digits: "Only numbers allowed",
-                min: "Quantity must be at least 1"
+            count: {
+                required: 'Please enter count'
             }
         },
 
@@ -37,10 +40,9 @@ $(document).ready(function () {
         submitHandler: function (form) {
 
             $.ajax({
-                url: ORDER_ITEM_STORE_URL,
+                url: STOCKTAKE_ITEM_STORE_URL,
                 type: 'POST',
                 data: $(form).serialize(),
-                dataType: 'json',
 
                 beforeSend: function () {
                     $('#addItemForm button[type="submit"]')
@@ -48,22 +50,29 @@ $(document).ready(function () {
                         .text('Saving...');
                 },
 
-                success: function (response) {
+                success: function (res) {
 
-                    if (response.status) {
+                    $('#addItemForm button[type="submit"]')
+                        .prop('disabled', false)
+                        .text('Save');
+
+                    if (res.status) {
 
                         $('#addItemModal').modal('hide');
 
+                        $('#addItemForm')[0].reset();
+
                         Swal.fire({
                             icon: 'success',
-                            title: 'Added',
-                            text: response.message,
-                            timer: 1500,
-                            showConfirmButton: false
+                            title: 'Success',
+                            text: res.message,
+                            confirmButtonText: 'OK'
                         }).then(() => {
-                            location.reload(); 
+                            location.reload();
                         });
 
+                    } else {
+                        Swal.fire('Error', res.message, 'error');
                     }
                 },
 
@@ -71,33 +80,40 @@ $(document).ready(function () {
 
                     $('#addItemForm button[type="submit"]')
                         .prop('disabled', false)
-                        .text('Save Item');
+                        .text('Save');
 
                     $('.is-invalid').removeClass('is-invalid');
                     $('.invalid-feedback').remove();
 
                     if (xhr.status === 422) {
+
                         $.each(xhr.responseJSON.errors, function (key, value) {
+
                             let input = $('[name="' + key + '"]');
+
                             input.addClass('is-invalid');
-                            input.after('<div class="invalid-feedback d-block">' + value[0] + '</div>');
+
+                            input.after(
+                                '<div class="invalid-feedback d-block">' + value[0] + '</div>'
+                            );
                         });
+
                     } else {
+
                         Swal.fire('Error', 'Something went wrong', 'error');
                     }
                 }
             });
         }
     });
+
 });
+
 $('#addItemModal').on('hidden.bs.modal', function () {
+
     $('#addItemForm')[0].reset();
     $('.is-invalid').removeClass('is-invalid');
     $('.invalid-feedback').remove();
-    $('#addItemForm button[type="submit"]').prop('disabled', false).text('Save Order');
+
 });
-function refreshOrderTotal() {
-    $.get(ORDER_TOTAL_URL, function (response) {
-        $('#totalOrderAmount').text('₹ ' + response.total);
-    });
-}
+

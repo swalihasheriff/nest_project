@@ -1,21 +1,20 @@
 $(document).ready(function () {
-    refreshOrderTotal()
 
-    $('#addItemForm').validate({
-
+    $('#newWorksheetForm').validate({
         rules: {
-            product_id: { required: true },
-            quantity: { required: true, digits: true, min: 1 }
-        },
-
-        messages: {
-            product_id: {
-                required: "Please select a product"
+            worksheet_name: {
+                required: true
             },
-            quantity: {
-                required: "Quantity is required",
-                digits: "Only numbers allowed",
-                min: "Quantity must be at least 1"
+            type: {
+                required: true
+            }
+        },
+        messages: {
+            worksheet_name: {
+                required: 'Please enter worksheet name'
+            },
+            type: {
+                required: 'Please select stocktake type'
             }
         },
 
@@ -37,67 +36,76 @@ $(document).ready(function () {
         submitHandler: function (form) {
 
             $.ajax({
-                url: ORDER_ITEM_STORE_URL,
+                url: STOCKTAKE_STORE_URL,
                 type: 'POST',
                 data: $(form).serialize(),
                 dataType: 'json',
 
                 beforeSend: function () {
-                    $('#addItemForm button[type="submit"]')
+                    $('#newWorksheetForm button[type="submit"]')
                         .prop('disabled', true)
                         .text('Saving...');
                 },
 
                 success: function (response) {
-
                     if (response.status) {
 
-                        $('#addItemModal').modal('hide');
+                        $('#newWorksheetModal').modal('hide');
 
                         Swal.fire({
                             icon: 'success',
-                            title: 'Added',
+                            title: 'Success',
                             text: response.message,
-                            timer: 1500,
-                            showConfirmButton: false
+                            confirmButtonText: 'OK'
                         }).then(() => {
-                            location.reload(); 
+                            location.reload();
                         });
-
                     }
                 },
 
                 error: function (xhr) {
 
-                    $('#addItemForm button[type="submit"]')
+                    $('#newWorksheetForm button[type="submit"]')
                         .prop('disabled', false)
-                        .text('Save Item');
+                        .text('Save');
 
                     $('.is-invalid').removeClass('is-invalid');
                     $('.invalid-feedback').remove();
 
-                    if (xhr.status === 422) {
+                    if (xhr.status === 422 && xhr.responseJSON.errors) {
+
                         $.each(xhr.responseJSON.errors, function (key, value) {
+
                             let input = $('[name="' + key + '"]');
                             input.addClass('is-invalid');
-                            input.after('<div class="invalid-feedback d-block">' + value[0] + '</div>');
+
+                            input.after(
+                                '<div class="invalid-feedback d-block">' + value[0] + '</div>'
+                            );
+
                         });
+
                     } else {
-                        Swal.fire('Error', 'Something went wrong', 'error');
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: xhr.responseJSON?.message || 'Something went wrong'
+                        });
+
                     }
                 }
             });
         }
     });
+
 });
-$('#addItemModal').on('hidden.bs.modal', function () {
-    $('#addItemForm')[0].reset();
+
+
+$('#newWorksheetModal').on('hidden.bs.modal', function () {
+
+    $('#newWorksheetForm')[0].reset();
     $('.is-invalid').removeClass('is-invalid');
     $('.invalid-feedback').remove();
-    $('#addItemForm button[type="submit"]').prop('disabled', false).text('Save Order');
+
 });
-function refreshOrderTotal() {
-    $.get(ORDER_TOTAL_URL, function (response) {
-        $('#totalOrderAmount').text('₹ ' + response.total);
-    });
-}
