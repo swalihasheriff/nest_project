@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\GoodsReceivingController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
@@ -116,6 +117,19 @@ Route::middleware(([CheckLogin::class]))->group(function () {
         Route::post('{id}/finalize', [StocktakeItemController::class, 'finalize'])->name('finalize');
         // Route::post('{id}/undo-finalize', [StocktakeItemController::class, 'undoFinalize'])->name('undoFinalize');
 
+    });
+
+
+
+    Route::prefix('accounts')->name('accounts.')->group(function () {
+        Route::get('/', [AccountController::class, 'index'])->name('index');
+        Route::get('/create', [AccountController::class, 'create'])->name('create');
+        Route::post('/store', [AccountController::class, 'store'])->name('store');
+        Route::get('{id}/edit', [AccountController::class, 'edit'])->name('edit');
+        Route::post('{id}/update', [AccountController::class, 'update'])->name('update');
+        Route::post('{id}/delete', [AccountController::class, 'destroy'])->name('destroy');
+        Route::get('{id}/sales', [AccountController::class, 'sales'])->name('sales');
+        Route::get('{id}/profile', [AccountController::class, 'profile'])->name('profile');
     });
 
 });
