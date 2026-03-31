@@ -3,7 +3,9 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\GoodsReceivingController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ManualInvoiceController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductPriceHistoryController;
 use App\Http\Controllers\StocktakeController;
 use App\Http\Controllers\StocktakeItemController;
 use App\Http\Controllers\WarehouseOrderController;
@@ -132,6 +134,21 @@ Route::middleware(([CheckLogin::class]))->group(function () {
         Route::get('{id}/profile', [AccountController::class, 'profile'])->name('profile');
     });
 
+    Route::prefix('manual-invoices')->name('manual-invoices.')->group(function () {
+
+        Route::get('/', [ManualInvoiceController::class, 'index'])->name('index');
+        Route::post('/store', [ManualInvoiceController::class, 'store'])->name('store');
+        Route::post('/items/update', [ManualInvoiceController::class, 'updateItem'])->name('items.update');
+        Route::post('/items/store', [ManualInvoiceController::class, 'storeItem'])->name('items.store');
+        Route::post('{id}/update', [ManualInvoiceController::class, 'update'])->name('update');
+        Route::get('{id}/view', [ManualInvoiceController::class, 'show'])->name('show');
+        Route::get('{id}/items', [ManualInvoiceController::class, 'items'])->name('items');
+        Route::post('/{id}/finalize', [ManualInvoiceController::class, 'finalize'])->name('finalize');
+        Route::post('/{id}/undo-finalize', [ManualInvoiceController::class, 'undoFinalize'])->name('undoFinalize');
+        Route::post('/items/delete', [ManualInvoiceController::class, 'deleteItem'])->name('items.delete');
+    });
+
+    Route::get('/product-price-history/{product_id}', [ProductPriceHistoryController::class, 'index'])->name('product-price-history');
 });
 
 
