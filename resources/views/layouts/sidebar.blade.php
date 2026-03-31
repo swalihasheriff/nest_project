@@ -31,11 +31,32 @@
                         <p>Warehouse Order</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ route('goods.receiving.index') }}" class="nav-link">
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon bi bi-truck"></i>
-                        <p>Goods Receiving</p>
+                        <p>
+                            Goods Receiving
+                            <i class="right bi bi-chevron-down"></i>
+                        </p>
                     </a>
+
+                    <ul class="nav nav-treeview">
+
+                        <li class="nav-item">
+                            <a href="{{ route('goods.receiving.index') }}" class="nav-link">
+                                <i class="bi bi-circle nav-icon"></i>
+                                <p>Goods Receiving</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('manual-invoices.index') }}" class="nav-link">
+                                <i class="bi bi-circle nav-icon"></i>
+                                <p>Manual Invoice</p>
+                            </a>
+                        </li>
+
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('stocktake.index') }}" class="nav-link">

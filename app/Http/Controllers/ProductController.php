@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductRequest\StoreProductRequest;
 use App\Http\Requests\ProductRequest\UpdateProductRequest;
 use App\Models\Product;
+use App\Models\ProductPriceHistory;
 use App\Models\Supplier;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -61,6 +62,12 @@ class ProductController extends Controller
                            class="btn btn-sm btn-outline-primary">
                            <i class="bi bi-pencil"></i>
                         </a>
+
+                        <button class="btn btn-sm btn-outline-info priceHistoryBtn"
+                          data-product-id="' . $row->id . '"
+                          title="Price History">
+                         <i class="bi bi-graph-up-arrow"></i>
+                        </button>
 
                         <div class="form-check form-switch m-0">
                             <input class="form-check-input product-status-toggle"
@@ -196,8 +203,14 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
+       
+        $oldPrice = $product->ctn_cost_price;
+        $newPrice = $request->ctn_cost_price;
+
+     
         $product->description = $request->description;
         $product->supplier_id = $request->supplier_id;
+
         $product->ctn_barcode = $request->ctn_barcode;
         $product->upc = $request->upc;
         $product->product_barcode1 = $request->product_barcode1;
@@ -207,7 +220,7 @@ class ProductController extends Controller
         $product->product_code = $request->product_code;
         $product->supplier_code = $request->supplier_code;
 
-        $product->ctn_cost_price = $request->ctn_cost_price;
+        $product->ctn_cost_price = $newPrice;
         $product->gst = $request->gst;
         $product->ctn_sell_price = $request->ctn_sell_price;
         $product->sell_price2 = $request->sell_price2;
@@ -217,18 +230,17 @@ class ProductController extends Controller
 
         $product->stock_on_hand = $request->stock_on_hand;
         $product->minimum_threshold = $request->minimum_threshold;
+
         $product->location = $request->location;
-
-        $product->reorder = $request->reorder ? 1 : 0;
-
-        $product->shelf_capacity = $request->shelf_capacity;
         $product->weight = $request->weight;
         $product->length = $request->length;
         $product->uom = $request->uom;
+
+        $product->reorder = $request->reorder ? 1 : 0;
+        $product->shelf_capacity = $request->shelf_capacity;
         $product->status = $request->status ?? 1;
 
         if ($request->hasFile('images')) {
-
 
             $existingImages = $product->images;
 
@@ -248,6 +260,20 @@ class ProductController extends Controller
         }
 
         $product->save();
+
+        if ($oldPrice != $newPrice) {
+ 
+            ProductPriceHistory::where('product_id', $product->id)
+                ->where('status', 1)
+                ->update(['status' => 0]);
+
+            ProductPriceHistory::create([
+                'product_id' => $product->id,
+                'price' => $newPrice,
+                'changed_from' => $oldPrice,
+                'status' => 1
+            ]);
+        }
 
         return response()->json([
             'status' => true,
@@ -285,6 +311,18 @@ class ProductController extends Controller
         }
 
         return response()->json($data);
+    }
+
+    public function priceHistory($product_id)
+    {
+        $history = ProductPriceHistory::where('product_id', $product_id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'status' => true,
+            'data' => $history
+        ]);
     }
 
     /**
