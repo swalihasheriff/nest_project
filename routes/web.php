@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ManualInvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductPriceHistoryController;
+use App\Http\Controllers\SalesController;
 use App\Http\Controllers\StocktakeController;
 use App\Http\Controllers\StocktakeItemController;
 use App\Http\Controllers\WarehouseOrderController;
@@ -149,6 +150,20 @@ Route::middleware(([CheckLogin::class]))->group(function () {
     });
 
     Route::get('/product-price-history/{product_id}', [ProductPriceHistoryController::class, 'index'])->name('product-price-history');
+
+    Route::prefix('sales')->name('sales.')->group(function () {
+
+        Route::get('/', [SalesController::class, 'index'])->name('index');
+        Route::post('/store', [SalesController::class, 'store'])->name('store');
+        Route::post('/{id}/update', [SalesController::class, 'update'])->name('update');
+        Route::post('/{id}/delete', [SalesController::class, 'destroy'])->name('delete');
+        Route::get('/{id}/view', [SalesController::class, 'show'])->name('show');
+        Route::get('/{id}/items', [SalesController::class, 'items'])->name('items');
+        Route::post('/items/store', [SalesController::class, 'storeItem'])->name('items.store');
+        Route::post('/items/{id}/delete', [SalesController::class, 'deleteItem'])->name('items.delete');
+        Route::post('/items/{id}/update', [SalesController::class, 'updateItem'])->name('items.update');
+        Route::post('/{id}/finalize', [SalesController::class, 'finalize'])->name('finalize');
+    });
 });
 
 

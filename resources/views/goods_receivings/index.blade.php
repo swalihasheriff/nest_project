@@ -13,7 +13,6 @@
 
                 <div class="table-responsive">
                     <table id="goodsReceivingTable" class="table table-bordered table-striped align-middle">
-
                         <thead class="table-light">
                             <tr>
                                 <th>Sl No</th>

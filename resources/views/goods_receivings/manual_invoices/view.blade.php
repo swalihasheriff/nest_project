@@ -105,7 +105,7 @@
 
         </div>
 
-        <div class="card shadow-sm mt-3">
+        <!-- <div class="card shadow-sm mt-3"> -->
             <div class="card-body text-end">
 
                 @if($invoice->status == 1)
