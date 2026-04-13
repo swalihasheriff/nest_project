@@ -58,12 +58,22 @@
 
                     </ul>
                 </li>
+
+
+                <li class="nav-item">
+                    <a href="{{ route('damaged-products.index') }}" class="nav-link">
+                        <i data-lucide="package-x" class="nav-icon"></i>
+                        <p>Damages</p>
+                    </a>
+                </li>
+
                 <li class="nav-item">
                     <a href="{{ route('stocktake.index') }}" class="nav-link">
                         <i class="nav-icon bi bi-clipboard-check"></i>
                         <p>Stocktake</p>
                     </a>
                 </li>
+
                 <li class="nav-item">
                     <a href="{{ route('accounts.index') }}" class="nav-link">
                         <i class="nav-icon bi bi-wallet2"></i>

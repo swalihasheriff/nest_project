@@ -3,8 +3,6 @@
 
 @section('content')
     <div class="container-fluid py-3">
-
-        <!-- Page Header -->
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h4 class="fw-semibold mb-0">Sales List</h4>
 
@@ -61,7 +59,6 @@
         <div class="modal-dialog">
             <form id="saleForm">
                 @csrf
-
                 <div class="modal-content">
 
                     <div class="modal-header">
@@ -82,7 +79,6 @@
                                 @endforeach
                             </select>
                         </div>
-
                         <!-- Type -->
                         <div class="mb-2">
                             <label>Type</label>

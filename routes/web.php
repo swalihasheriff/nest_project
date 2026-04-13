@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\DamagedProductController;
 use App\Http\Controllers\GoodsReceivingController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ManualInvoiceController;
@@ -163,6 +164,16 @@ Route::middleware(([CheckLogin::class]))->group(function () {
         Route::post('/items/{id}/delete', [SalesController::class, 'deleteItem'])->name('items.delete');
         Route::post('/items/{id}/update', [SalesController::class, 'updateItem'])->name('items.update');
         Route::post('/{id}/finalize', [SalesController::class, 'finalize'])->name('finalize');
+    });
+
+    Route::prefix('damaged-products')->name('damaged-products.')->group(function () {
+
+        Route::get('/', [DamagedProductController::class, 'index'])->name('index');
+        Route::post('/store', [DamagedProductController::class, 'store'])->name('store');
+        Route::post('/{id}/undo', [DamagedProductController::class, 'undo'])->name('undo');
+        Route::post('/update/{id}', [DamagedProductController::class, 'update'])->name('update');
+        Route::post('/{id}/delete', [DamagedProductController::class, 'destroy'])->name('delete');
+
     });
 });
 

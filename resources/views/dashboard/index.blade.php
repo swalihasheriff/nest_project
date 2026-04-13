@@ -120,7 +120,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-        // Sales Chart
         new Chart(document.getElementById('salesChart'), {
             type: 'line',
             data: {

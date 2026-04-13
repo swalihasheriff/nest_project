@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <title>@yield('title')</title>
@@ -9,12 +10,10 @@
 
 
     {{-- Fonts --}}
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css">
 
     {{-- Bootstrap Icons --}}
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     {{-- AdminLTE CSS --}}
     <link rel="stylesheet" href="{{ asset('css/adminlte.css') }}">
@@ -25,38 +24,43 @@
 
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
 
-<div class="app-wrapper">
+    <div class="app-wrapper">
 
-    {{-- HEADER --}}
-    @include('layouts.header')
+        {{-- HEADER --}}
+        @include('layouts.header')
 
-    {{-- SIDEBAR --}}
-    @include('layouts.sidebar')
+        {{-- SIDEBAR --}}
+        @include('layouts.sidebar')
 
-    {{-- MAIN CONTENT --}}
-    <main class="app-main">
-        @yield('content')
-    </main>
+        {{-- MAIN CONTENT --}}
+        <main class="app-main">
+            @yield('content')
+        </main>
 
-    {{-- FOOTER --}}
-    @include('layouts.footer')
+        {{-- FOOTER --}}
+        @include('layouts.footer')
 
-</div>
+    </div>
 
-{{-- SCRIPTS  --}}
+    {{-- SCRIPTS --}}
 
-{{-- Bootstrap --}}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    {{-- Bootstrap --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 
-{{-- AdminLTE --}}
-<script src="{{ asset('js/adminlte.js') }}"></script>
+    {{-- AdminLTE --}}
+    <script src="{{ asset('js/adminlte.js') }}"></script>
 
-{{-- ApexCharts (used in dashboard) --}}
-<script src="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.min.js"></script>
+    {{-- ApexCharts (used in dashboard) --}}
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.min.js"></script>
 
-{{-- Page specific JS --}}
-@stack('scripts')
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+    {{-- Page specific JS --}}
+    @stack('scripts')
 
 </body>
+
 </html>
