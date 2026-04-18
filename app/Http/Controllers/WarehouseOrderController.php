@@ -10,6 +10,7 @@ use App\Models\WarehouseOrder;
 use App\Models\WarehouseOrderItem;
 use Carbon\Carbon;
 use DB;
+use Exception;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -147,7 +148,7 @@ public function deliver(WarehouseOrder $order)
             $order->load('items');
 
             if ($order->items->isEmpty()) {
-                throw new \Exception('No items found for this order');
+                throw new Exception('No items found for this order');
             }
 
             foreach ($order->items as $item) {

@@ -4,6 +4,10 @@ $(document).on('click', '.edit-receiving', function () {
 
     $('#receiving_id').val(id);
 
+    $('#invoice_number').val($(this).data('invoice'));
+    
+    $('#order_id').val($(this).data('order'));
+
     $('#editReceiveModal').modal('show');
 
 });
@@ -17,6 +21,9 @@ $('#receiveForm').validate({
         },
         received_on: {
             required: true
+        },
+        invoice_number: {
+            required: true
         }
     },
 
@@ -24,9 +31,12 @@ $('#receiveForm').validate({
         received_by: {
             required: "Receiver name is required"
         },
-       received_on: {
+        received_on: {
             required: "Received date is required",
             date: "Enter a valid date"
+        },
+        invoice_number: {
+            required: "Invoice number is required"
         }
     },
 
@@ -57,7 +67,10 @@ $('#receiveForm').validate({
             data: {
                 _token: $('input[name="_token"]').val(),
                 received_by: $('#received_by').val(),
-                received_on: $('#received_on').val()
+                received_on: $('#received_on').val(),
+                invoice_number: $('#invoice_number').val(),
+                receiving_id: $('#receiving_id').val(),
+                order_id: $('#order_id').val()
             },
 
             beforeSend: function () {

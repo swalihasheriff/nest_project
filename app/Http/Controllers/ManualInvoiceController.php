@@ -11,6 +11,7 @@ use App\Models\ManualInvoiceItem;
 use App\Models\Product;
 use App\Models\ProductPriceHistory;
 use App\Models\Supplier;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -32,7 +33,7 @@ class ManualInvoiceController extends Controller
                 ->addIndexColumn()
 
                 ->addColumn('invoice_date', function ($row) {
-                    return \Carbon\Carbon::parse($row->invoice_date)->format('d M Y');
+                    return Carbon::parse($row->invoice_date)->format('d M Y');
                 })
 
                 ->addColumn('supplier', function ($row) {
@@ -43,7 +44,7 @@ class ManualInvoiceController extends Controller
                 })
 
                 ->addColumn('received_on', function ($row) {
-                    return \Carbon\Carbon::parse($row->received_on)->format('d M Y');
+                    return Carbon::parse($row->received_on)->format('d M Y');
                 })
 
                 ->addColumn('status', function ($row) {
@@ -57,17 +58,39 @@ class ManualInvoiceController extends Controller
                 })
 
                 ->addColumn('action', function ($row) {
-                    return '
-                    <button class="btn btn-sm btn-primary editInvoiceBtn" 
-                        data-invoice=\'' . json_encode($row) . '\'>
-                        <i class="bi bi-pencil"></i>
-                    </button>
 
-                    <a href="' . route('manual-invoices.show', $row->id) . '" 
+                    $editBtn = '';
+                    $returnBtn = '';
+
+                    if ($row->status == 1) {
+                        $editBtn = '
+            <button class="btn btn-sm btn-primary editInvoiceBtn" 
+                data-invoice=\'' . json_encode($row) . '\'>
+                <i class="bi bi-pencil"></i>
+            </button>
+        ';
+                    }
+
+                    if ($row->status == 2) {
+                        $returnBtn = '
+            <a href="' . route('returns.index', [
+                                'manual_invoice_id' => $row->id
+                            ]) . '" class="btn btn-sm btn-danger" title="Return Items">
+                <i class="bi bi-arrow-return-left"></i>
+            </a>
+        ';
+                    }
+
+                    return '
+        ' . $editBtn . '
+
+        <a href="' . route('manual-invoices.show', $row->id) . '" 
            class="btn btn-sm btn-info">
             <i class="bi bi-eye"></i>
         </a>
-                ';
+
+        ' . $returnBtn . '
+    ';
                 })
 
                 ->rawColumns(['status', 'action'])
@@ -116,20 +139,20 @@ class ManualInvoiceController extends Controller
     public function show(string $id)
     {
         $invoice = ManualInvoice::with('suppliers')->find($id);
-   
+
 
         if (!$invoice) {
             return redirect()->route('manual-invoices.index')
                 ->with('error', 'Invoice not found');
         }
-        $products = Product::select('id', 'description', 'product_barcode1')->where('supplier_id',$invoice->supplier)->get();
+        $products = Product::select('id', 'description', 'product_barcode1')->where('supplier_id', $invoice->supplier)->get();
 
         return view('goods_receivings.manual_invoices.view', compact('invoice', 'products'));
     }
 
     public function items($id)
     {
-        $items = ManualInvoiceItem::with(['product', 'invoice']) 
+        $items = ManualInvoiceItem::with(['product', 'invoice'])
             ->where('manual_invoice_id', $id);
 
         return DataTables::of($items)
@@ -251,12 +274,12 @@ class ManualInvoiceController extends Controller
     public function finalize($id)
     {
         $invoice = ManualInvoice::with('items.product')->findOrFail($id);
-        
+
 
         foreach ($invoice->items as $item) {
 
             $product = $item->product;
-          
+
 
             if (!$product) {
                 continue;
@@ -371,6 +394,6 @@ class ManualInvoiceController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // 
     }
 }

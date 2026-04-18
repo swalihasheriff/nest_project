@@ -112,7 +112,6 @@ class SalesController extends Controller
         $sale->delivery_date = $request->delivery_date;
         $sale->status = 0;
         $sale->total_amount = 0;
-
         $sale->save();
 
         return response()->json([

@@ -9,6 +9,7 @@ class GoodsReceiving extends Model
     protected $fillable = [
         'warehouse_order_id',
         'supplier_id',
+        'invoice_number',
         'received_by',
         'received_on',
         'status',   

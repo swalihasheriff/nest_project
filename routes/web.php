@@ -7,6 +7,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ManualInvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductPriceHistoryController;
+use App\Http\Controllers\ReturnController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\StocktakeController;
 use App\Http\Controllers\StocktakeItemController;
@@ -174,6 +175,14 @@ Route::middleware(([CheckLogin::class]))->group(function () {
         Route::post('/update/{id}', [DamagedProductController::class, 'update'])->name('update');
         Route::post('/{id}/delete', [DamagedProductController::class, 'destroy'])->name('delete');
 
+    });
+
+    Route::prefix('returns')->group(function () {
+
+        Route::get('/', [ReturnController::class, 'index'])->name('returns.index');
+        Route::post('/', [ReturnController::class, 'store'])->name('returns.store');
+        Route::post('/{id}/undo', [ReturnController::class, 'undoFinalize'])->name('returns.undo');
+        Route::get('/returns-list', [ReturnController::class, 'list'])->name('returns.list');
     });
 });
 
