@@ -1,4 +1,3 @@
-<!-- resources/views/layouts/sidebar.blade.php -->
 <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
     <div class="sidebar-brand">
         <a href="./index.html" class="brand-link"></a>
@@ -53,6 +52,13 @@
                             <a href="{{ route('manual-invoices.index') }}" class="nav-link">
                                 <i class="bi bi-circle nav-icon"></i>
                                 <p>Manual Invoice</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('returns.list') }}" class="nav-link">
+                                <i class="bi bi-circle nav-icon"></i>
+                                <p>Returns</p>
                             </a>
                         </li>
 

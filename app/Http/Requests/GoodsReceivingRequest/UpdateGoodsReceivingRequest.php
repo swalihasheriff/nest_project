@@ -32,7 +32,13 @@ class UpdateGoodsReceivingRequest extends FormRequest
                 'required',
                 'date',
                 'after_or_equal:' . $orderDate,
-                'before_or_equal:today'
+                'before_or_equal:today',
+            ],
+            'invoice_number' => [
+                'required',
+                'string',
+                'max:50',
+                'unique:goods_receivings,invoice_number,' . $this->receiving_id
             ]
         ];
     }
@@ -41,9 +47,11 @@ class UpdateGoodsReceivingRequest extends FormRequest
         return [
             'received_by.required' => 'Receiver name is required',
             'received_on.required' => 'Received date is required',
-            'received_on.date' => 'Please enter a valid date.',
-            'received_on.after_or_equal' => 'Receiving date must be on or after the order date.',
-            'received_on.before_or_equal' => 'Please enter a valid date.'
+            'received_on.date' => 'Please enter a valid date',
+            'received_on.after_or_equal' => 'Receiving date must be on or after the order date',
+            'received_on.before_or_equal' => 'Please enter a valid date',
+            'invoice_number.required' => 'Invoice number is required',
+            'invoice_number.unique' => 'Invoice number already exists',
         ];
     }
 }

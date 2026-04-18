@@ -16,6 +16,7 @@
                         <thead class="table-light">
                             <tr>
                                 <th>Sl No</th>
+                                <th>Invoice No</th>
                                 <th>Supplier</th>
                                 <th>Received On</th>
                                 <th>Received By</th>
@@ -53,10 +54,16 @@
                     </div>
 
                     <div class="modal-body">
-                        <input type="hidden" name="order_id" id="order_id">
                         <input type="hidden" id="receiving_id" name="receiving_id">
                         <input type="hidden" name="order_id" id="order_id">
                         <input type="hidden" name="supplier_id" id="supplier_id">
+
+                        <div class="mb-3">
+                            <label class="form-label">Invoice Number</label>
+                            <input type="text" name="invoice_number" id="invoice_number" class="form-control"
+                                placeholder="Enter invoice number">
+                        </div>
+
                         <div class="mb-3">
                             <label class="form-label">Received By</label>
                             <input type="text" name="received_by" id="received_by" class="form-control"

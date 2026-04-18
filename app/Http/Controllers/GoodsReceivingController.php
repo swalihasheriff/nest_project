@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\GoodsReceivingRequest\AddReceivingItemRequest;
 use App\Http\Requests\GoodsReceivingRequest\StoreGoodsReceivingRequest;
+use App\Http\Requests\GoodsReceivingRequest\UpdateGoodsReceivingRequest;
 use App\Models\GoodsReceiving;
 use App\Models\Product;
 use App\Models\WarehouseOrder;
 use App\Models\WarehouseOrderItem;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -25,13 +27,17 @@ class GoodsReceivingController extends Controller
             return DataTables::of($orders)
                 ->addIndexColumn()
 
+                ->addColumn('invoice_no', function ($row) {
+                    return $row->invoice_number ?? '-';
+                })
+
                 ->addColumn('supplier', function ($row) {
                     return $row->supplier?->name ?? '-';
                 })
 
                 ->addColumn('received_on', function ($row) {
                     return $row->received_on
-                        ? \Carbon\Carbon::parse($row->received_on)->format('d-m-Y')
+                        ? Carbon::parse($row->received_on)->format('d-m-Y')
                         : '-';
                 })
 
@@ -51,13 +57,28 @@ class GoodsReceivingController extends Controller
                 ->addColumn('action', function ($row) {
 
                     $editButton = '';
+                    $returnButton = '';
+
 
                     if ($row->status == 1) {
                         $editButton = '
         <button class="btn btn-sm btn-primary edit-receiving"
-            data-id="' . $row->id . '">
+            data-id="' . $row->id . '"
+            data-order="' . $row->warehouse_order_id . '"
+            data-invoice="' . $row->invoice_number . '">
             <i class="bi bi-pencil"></i>
         </button>';
+                    }
+
+                    if ($row->status == 1) {
+                        $returnButton = '
+        <a href="' . route('returns.index', [
+                                'goods_receiving_id' => $row->id
+                            ]) . '" class="btn btn-sm btn-danger">
+            <i class="bi bi-arrow-return-left"></i>
+        </a>
+    ';
+
                     }
 
                     return '
@@ -69,6 +90,8 @@ class GoodsReceivingController extends Controller
            class="btn btn-sm btn-outline-secondary">
             <i class="bi bi-eye"></i>
         </a>
+
+        ' . $returnButton . '
 
     </div>';
                 })
@@ -102,23 +125,27 @@ class GoodsReceivingController extends Controller
         ]);
     }
 
-    public function store(StoreGoodsReceivingRequest $request)
-    {
+    // public function store(StoreGoodsReceivingRequest $request)
+    // {
+    //     dd("Hi");
+    //     $receiving = GoodsReceiving::create([
+    //         'warehouse_order_id' => $request->order_id,
+    //         'supplier_id' => $request->supplier_id,
+    //         'received_by' => $request->received_by,
+    //         'received_on' => $request->received_on,
+    //         'status' => 1,
+    //     ]);
 
-        $receiving = GoodsReceiving::create([
-            'warehouse_order_id' => $request->order_id,
-            'supplier_id' => $request->supplier_id,
-            'received_by' => $request->received_by,
-            'received_on' => $request->received_on,
-            'status' => 1
-        ]);
+    //     $receiving->invoice_number = 20000 + $receiving->id;
+    //     dd($receiving);
+    //     $receiving->save();
 
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Goods received successfully'
-        ]);
-    }
+    //     return response()->json([
+    //         'status' => true,
+    //         'message' => 'Goods received successfully'
+    //     ]);
+    // }
 
     public function show($id)
     {
@@ -140,9 +167,10 @@ class GoodsReceivingController extends Controller
         //
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateGoodsReceivingRequest $request, $id)
     {
         $receiving = GoodsReceiving::findOrFail($id);
+
         if ($receiving->status != 1) {
             return response()->json([
                 'status' => false,
@@ -153,12 +181,12 @@ class GoodsReceivingController extends Controller
         $receiving->update([
             'received_by' => $request->received_by,
             'received_on' => $request->received_on,
-
+            'invoice_number' => $request->invoice_number,
         ]);
 
         return response()->json([
             'status' => true,
-            'success' => 'Goods receiving updated successfully'
+            'message' => 'Goods receiving updated successfully'
         ]);
     }
 

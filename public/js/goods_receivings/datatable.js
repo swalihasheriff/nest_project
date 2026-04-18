@@ -7,8 +7,9 @@ const goodsTable = $(TABLE_ID).DataTable({
         url: INDEX_URL
     },
 
-    columns: [
+    columns: [ 
         {data:'DT_RowIndex', name:'DT_RowIndex', orderable:false, searchable:false},
+        {data:'invoice_no', name:'invoice_number'},
         {data:'supplier', name:'supplier'},
         {data:'received_on', name:'received_on'},
         {data:'received_by', name:'received_by'},

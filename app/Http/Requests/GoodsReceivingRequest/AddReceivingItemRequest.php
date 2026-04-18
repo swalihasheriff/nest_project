@@ -36,6 +36,7 @@ class AddReceivingItemRequest extends FormRequest
         'quantity.required'   => 'Quantity is required',
         'quantity.integer'    => 'Quantity must be a number',
         'quantity.min'        => 'Quantity must be at least 1'
+        
     ];
 }
 }
