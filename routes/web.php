@@ -7,6 +7,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ManualInvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductPriceHistoryController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReturnController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\StocktakeController;
@@ -183,6 +184,23 @@ Route::middleware(([CheckLogin::class]))->group(function () {
         Route::post('/', [ReturnController::class, 'store'])->name('returns.store');
         Route::post('/{id}/undo', [ReturnController::class, 'undoFinalize'])->name('returns.undo');
         Route::get('/returns-list', [ReturnController::class, 'list'])->name('returns.list');
+    });
+    Route::prefix('reports')->name('reports.')->group(function () {
+
+        Route::get('/', [ReportController::class, 'index'])->name('index');
+
+        Route::get('/stock', [ReportController::class, 'stock'])->name('stock');
+        Route::post('/stock/export', [ReportController::class, 'exportStock'])->name('stock.export');
+
+        Route::get('/pickup', [ReportController::class, 'pickup'])->name('pickup');
+        Route::post('/pickup/export', [ReportController::class, 'exportPickup'])->name('pickup.export');
+
+        Route::get('/sales-sum', [ReportController::class, 'salesSum'])->name('sales.sum');
+        Route::post('/sales-sum/export', [ReportController::class, 'exportSalesSum'])->name('sales.sum.export');
+
+        Route::get('/sales', [ReportController::class, 'sales'])->name('sales');
+        Route::post('/sales/export', [ReportController::class, 'exportSales'])->name('sales.export');
+
     });
 });
 

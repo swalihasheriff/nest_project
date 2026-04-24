@@ -29,8 +29,8 @@ class ReturnController extends Controller
 
                 ->addColumn('invoice_number', function ($row) {
 
-                    return $row->manualInvoice->invoice_number
-                        ?? $row->goodsReceiving->invoice_number
+                    return $row->return->manualInvoice->invoice_number
+                        ?? $row->return->goodsReceiving->invoice_number
                         ?? '-';
                 })
 

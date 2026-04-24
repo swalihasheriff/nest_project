@@ -33,26 +33,24 @@
                             </div>
                         </div>
                     </a>
-
                 </div>
 
                 <div class="col-lg-2 col-md-4 col-6">
                     <a href="{{ route('warehouse.orders.index') }}" class="text-decoration-none">
                         <div class="small-box bg-dark text-white">
-                        <div class="inner">
-                            <h4>{{ $orderCount }}</h4>
-                            <p>Orders</p>
+                            <div class="inner">
+                                <h4>{{ $orderCount }}</h4>
+                                <p>Orders</p>
+                            </div>
                         </div>
-                    </div>
                     </a>
-                    
                 </div>
 
                 <div class="col-lg-2 col-md-4 col-6">
                     <div class="small-box bg-primary text-white">
                         <div class="inner">
-                            <h4>3</h4>
-                            <p>Pickups</p>
+                            <h4>{{ $pickupsToday }}</h4>
+                            <p>Pickups Today</p>
                         </div>
                     </div>
                 </div>
@@ -60,7 +58,7 @@
                 <div class="col-lg-2 col-md-4 col-6">
                     <div class="small-box bg-success text-white">
                         <div class="inner">
-                            <h4>0</h4>
+                            <h4>₹{{ number_format($salesYesterday, 0) }}</h4>
                             <p>Sales Yesterday</p>
                         </div>
                     </div>
@@ -69,7 +67,7 @@
                 <div class="col-lg-2 col-md-4 col-6">
                     <div class="small-box bg-black text-white">
                         <div class="inner">
-                            <h4>0</h4>
+                            <h4>₹{{ number_format($salesToday, 0) }}</h4>
                             <p>Sales Today</p>
                         </div>
                     </div>
@@ -78,14 +76,15 @@
                 <div class="col-lg-2 col-md-4 col-6">
                     <div class="small-box bg-success text-white">
                         <div class="inner">
-                            <h4>0</h4>
+                            <h4>{{ $pendingDeliveries }}</h4>
                             <p>Pending Deliveries</p>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row align-items-stretch mb-4">
 
+            </div>
+
+            <div class="row align-items-stretch mb-4">
 
                 <div class="col-lg-8">
                     <div class="card h-100 shadow-sm">
@@ -97,7 +96,6 @@
                         </div>
                     </div>
                 </div>
-
 
                 <div class="col-lg-4">
                     <div class="card h-100 shadow-sm">
@@ -113,46 +111,64 @@
             </div>
         </div>
     </div>
-@endsection
 
+@endsection
 
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
+        // Sales Chart (Line Chart - Last 7 Days)
         new Chart(document.getElementById('salesChart'), {
             type: 'line',
             data: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                labels: {!! json_encode($salesChartLabels) !!},
                 datasets: [{
-                    data: [1200, 1900, 800, 1500, 2000, 1700, 2200],
+                    label: 'Sales Amount',
+                    data: {!! json_encode($salesChartData) !!},
                     borderColor: '#0d6efd',
                     backgroundColor: 'rgba(13,110,253,0.15)',
                     tension: 0.4,
-                    fill: true
+                    fill: true,
+                    borderWidth: 2
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { display: false } }
+                plugins: { 
+                    legend: { display: true } 
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
             }
         });
 
-        // Orders Chart
+        // Orders Chart (Bar Chart)
         new Chart(document.getElementById('ordersChart'), {
             type: 'bar',
             data: {
-                labels: ['Orders', 'Delivered', 'Pending'],
+                labels: ['Total Orders', 'Delivered', 'Pending'],
                 datasets: [{
-                    data: [40, 28, 12],
+                    label: 'Count',
+                    data: [{{ $totalOrders }}, {{ $totalDelivered }}, {{ $totalPending }}],
                     backgroundColor: ['#0d6efd', '#198754', '#ffc107']
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { display: false } }
+                plugins: { 
+                    legend: { display: false } 
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
             }
         });
     </script>
