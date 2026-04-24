@@ -9,16 +9,16 @@
             <h4 class="fw-semibold mb-0">Product List</h4>
 
             <div class="d-flex gap-2">
-                <button class="btn btn-outline-secondary">
+                <!-- <button class="btn btn-outline-secondary">
                     <i class="bi bi-download me-1"></i> Import Products
-                </button>
+                </button> -->
 
                 <a href="{{ route('products.create') }}" class="btn btn-outline-primary">
                     <i class="bi bi-plus-circle me-1"></i> Add New Product
                 </a>
             </div>
         </div>
-
+        
         <!-- Product Table -->
         <div class="card shadow-sm">
             <div class="card-body p-3">

@@ -93,7 +93,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('reports.index') }}" class="nav-link">
                         <i class="nav-icon bi bi-bar-chart-line"></i>
                         <p>Reports</p>
                     </a>
